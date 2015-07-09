@@ -1,0 +1,9 @@
+{
+	"scripts": {
+		"server": "http-server c:/Users/jaime/sites/public",
+		"styl": "stylus -u nib -w -c index.styl -o ../../public",
+		"jade": "jade -w index.jade -o ../../public"
+
+	}
+}
+
