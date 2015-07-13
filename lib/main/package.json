@@ -2,7 +2,7 @@
 	"scripts": {
 		"server": "http-server ~/Sites/web/public",
 		"styl": "stylus -u nib -w -c index.styl -o ../../public",
-		"jade": "jade -w -P index.jade -o ../../public"
+		"jade": "jade -w -P index.jade -o ../../public",
 		"babel": "babel --watch ../scripts --out-dir ../../public/"
 	}
 }

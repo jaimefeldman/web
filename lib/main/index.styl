@@ -1,8 +1,18 @@
 //Estilo para index
 @import 'nib'
+@import './card/styles.styl'
+
+//algo
 
 body
 	font-size 16px
+
+drawBox(color = red)
+	border 1px solid color
+	box-sizing border-box
+	padding .5em 
+	margin .5em
+
 
 box(color=red)
 	margin 5em
@@ -16,7 +26,33 @@ box(color=red)
 	border-radius 10px
 	display flex
 	flex-direction column	
+	justify-content space-between
 	height 95vh
 	background linear-gradient(top, #7abcff 0%,#60abf8 30%,#4096ee 100%)
 	box-shadow 0 0 35px rgba(0,0,0,.75)
-
+	>section
+		margin .5em
+	&-antagonist
+		drawBox(black)
+	&-main
+		drawBox(black)
+	&-player
+		drawBox(black)
+.Main
+	display flex
+	flex-direction row
+	&-points
+		drawBox(black)
+		width 200px
+		text-align center
+		paddign .5em
+		margin 0
+	&-battle
+		drawBox(black)
+		flex 1
+	&-message
+		drawBox(black)
+		width 200px
+		background white
+		border 5px dashed red
+		right 0
