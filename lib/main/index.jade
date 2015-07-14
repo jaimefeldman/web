@@ -6,8 +6,9 @@ html(lang="es")
 		link(rel="stylesheet" href="./index.css" type="text/css")
 	body
 		section.Layout
-			section.Layout-antagonist antagonista
-				include ../components/cards/template.jade
+			section.Layout-antagonist 
+				each cardName in [1,2,3,4,5]
+					include ../components/cards/template.jade
 			section.Layout-main 
 				.Main
 					.Main-points -points

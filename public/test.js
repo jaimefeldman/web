@@ -1,5 +1,6 @@
 "use strict";
 
+var $ = window.jQuery;
 var $nombre = "marvel script";
 
 var MarvelApi = window.MarvelApi;
@@ -12,9 +13,10 @@ var key = "7fc2445ad7eaaca3d264f95151c2e64f";
 var api = new MarvelApi(key);
 api.findSeries("avengers")
 //Promise.resolve($.get(urlMarvel))
-.then(function (results) {
-	debugger;
-	var characters = results.characters.items;
+.then(function (serie) {
+	var serieImage = "url(" + serie.thumbnail.path + "." + serie.thumbnail.extension + ")";
+	$(".Layout").css("background-image", serieImage);
+	var characters = serie.characters.items;
 	var promises = [];
 	//for(var i in characters) {
 	//	var character = characters[i]
@@ -48,13 +50,29 @@ api.findSeries("avengers")
 	}
 
 	return Promise.all(promises);
-}).then(function (character) {
-	//Promises.all resulve todo lo que hay dentro de una array y cuando este listo devuelve.
-	debugger;
+}).then(function (characters) {
+	return characters.filter(function (character) {
+		return !!character.thumbnail && !!character.description;
+	});
+}).then(function (characters) {
+	$(".Card").each(function (i, item) {
+		var character = characters[i];
+		var $this = $(item);
+
+		var $name = $this.find(".Card-name");
+		var $image = $this.find(".Card-image");
+		var $descrip = $this.find(".Card-description");
+
+		$name.text(character.name);
+		$image.attr("src", character.thumbnail.path + "." + character.thumbnail.extension);
+		$descrip.text(character.description);
+	});
 })["catch"](function (err) {
 	debugger;
 	console.error(err);
 });
+//Promises.all resulve todo lo que hay dentro de una array y cuando este listo devuelve.
+
 //pomises estados.
 //resolve
 //pending
