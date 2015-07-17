@@ -15,6 +15,23 @@ var MarvelApi = (function () {
 	}
 
 	_createClass(MarvelApi, [{
+		key: "searchCharacter",
+		value: function searchCharacter(nombre) {
+			var url = this.baseURL + "characters?name=" + nombre + "&apikey=" + this.key;
+
+			return Promise.resolve($.get(url)).then(function (res) {
+				return Promise.resolve(res.data.results[0]);
+			})
+			/*	otra forma de hacer promesas funciona igual que la anterior.
+   return new Promise(function(done){
+   	$.get(url).done(function(data){
+   		done(data)
+   	})
+   })
+   */
+			;
+		}
+	}, {
 		key: "findSeries",
 		value: function findSeries(title) {
 			var url = this.baseURL + "series?title=" + title + "&apikey=" + this.key;

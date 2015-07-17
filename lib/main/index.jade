@@ -11,7 +11,10 @@ html(lang="es")
 					include ../components/cards/template.jade
 			section.Layout-main 
 				.Main
-					.Main-points -points
+					.Main-points 
+						form.CharacterForm
+							input.CharacterForm-name(type="text", placeholder="Agrega un personaje")
+							button Agregar
 					.Main-battle -battle 
 					.Main-message -message
 			section.Layout-player player

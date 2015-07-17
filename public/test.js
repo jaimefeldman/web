@@ -2,6 +2,7 @@
 
 var $ = window.jQuery;
 var $nombre = "marvel script";
+var cardArray = window.cardArray = [];
 
 var MarvelApi = window.MarvelApi;
 
@@ -15,7 +16,8 @@ api.findSeries("avengers")
 //Promise.resolve($.get(urlMarvel))
 .then(function (serie) {
 	var serieImage = "url(" + serie.thumbnail.path + "." + serie.thumbnail.extension + ")";
-	$(".Layout").css("background-image", serieImage);
+	//con un background de marvel.
+	//$('.Layout').css('background-image', serieImage)
 	var characters = serie.characters.items;
 	var promises = [];
 	//for(var i in characters) {
@@ -29,9 +31,9 @@ api.findSeries("avengers")
 
 	try {
 		for (var _iterator = characters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-			var character = _step.value;
+			var _character = _step.value;
 
-			var promise = api.getResourceURI(character.resourceURI);
+			var promise = api.getResourceURI(_character.resourceURI);
 			promises.push(promise);
 		}
 	} catch (err) {
@@ -58,7 +60,6 @@ api.findSeries("avengers")
 }).then(function (characters) {
 
 	characters = shuffle(characters);
-
 	$(".Card").each(function (i, item) {
 		var rand = Math.floor(Math.random() * characters.length - 1);
 		if (rand == -1) rand = 0;
@@ -69,6 +70,10 @@ api.findSeries("avengers")
 		console.log("attack poitn generated :" + parseInt(attackPoint));
 
 		var character = characters[rand];
+
+		//almacenando los characters del tablero en arreglo.
+		cardArray[i] = character;
+
 		var $this = $(item);
 
 		var $name = $this.find(".Card-name");
@@ -118,13 +123,16 @@ $(".Card").click(function(e){
 //intentando que sea en un sector determiando.
 $(".Layout-antagonist").on("click", function (e) {
 
-	if ($(e.target.parentNode).is(".Card")) {
+	var carta = e.target;
+	console.log(carta);
+	if ($(carta).is(".Card")) {
 
 		var $this = $(e.target.parentNode);
 		var nombre = $this.find(".Card-name");
 		var points = $this.find(".Card-attack");
 
 		console.log("el nombre de la carta es :" + nombre.text() + " y posee :" + points.data("attack") + " puntos de ataque.");
+		debugger;
 	}
 });
 
@@ -143,9 +151,42 @@ function shuffle(arr) {
 	return arr;
 }
 
+function changeCard(indice, newCharacter) {
+	if (indice <= 0 && indice >= 4) {
+		character = cardArray[indice];
+
+		var attackPoint = Math.floor(Math.random() * 500) + 500;
+
+		var $this = $(item);
+
+		var $name = $this.find(".Card-name");
+		var $image = $this.find(".Card-image");
+		var $descrip = $this.find(".Card-description");
+		var $attack = $this.find(".Card-attack");
+
+		$name.text(newCharacter.name);
+		$image.attr("src", newCharacter.thumbnail.path + "." + newCharacter.thumbnail.extension);
+		$descrip.text(newCharacter.description);
+		$attack.attr("data-attack", attackPoint);
+		$attack.text("Puntos de ataque : " + attackPoint);
+		return this;
+	}
+}
+
 function hola(mensaje) {
 	return "Hola amigo " + mensaje;
 }
 
-//Array.prototype.shuffle =  shuffle
+$(".CharacterForm").on("submit", function (event) {
+	event.preventDefault();
+	var name = $(this).find(".CharacterForm-name").val();
+	api.searchCharacter(name).then(function (character) {
+		console.log(character.name);
+		console.log(hola(character.name));
+		changeCard(0, character);
+	});
+});
+
 //Promises.all resulve todo lo que hay dentro de una array y cuando este listo devuelve.
+
+//Array.prototype.shuffle =  shuffle
