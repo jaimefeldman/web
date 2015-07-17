@@ -52,20 +52,30 @@ api.findSeries("avengers")
 	return Promise.all(promises);
 }).then(function (characters) {
 	return characters.filter(function (character) {
-		return !!character.thumbnail && !!character.description;
+		return !!character.thumbnail //&& !!character.description
+		;
 	});
 }).then(function (characters) {
+
 	$(".Card").each(function (i, item) {
-		var character = characters[i];
+		var rand = Math.floor(Math.random() * characters.length - 1);
+		if (rand == -1) rand = 0;
+
+		var attackPoint = Math.floor(Math.random() * 500) + 500;
+		console.log("attack poitn generated :" + parseInt(attackPoint));
+
+		var character = characters[rand];
 		var $this = $(item);
 
 		var $name = $this.find(".Card-name");
 		var $image = $this.find(".Card-image");
 		var $descrip = $this.find(".Card-description");
+		var $attack = $this.find(".Card-attack");
 
 		$name.text(character.name);
 		$image.attr("src", character.thumbnail.path + "." + character.thumbnail.extension);
 		$descrip.text(character.description);
+		$attack.text("Puntos de ataque : " + attackPoint);
 	});
 })["catch"](function (err) {
 	debugger;
