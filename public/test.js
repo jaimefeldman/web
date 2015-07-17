@@ -57,9 +57,13 @@ api.findSeries("avengers")
 	});
 }).then(function (characters) {
 
+	characters = shuffle(characters);
+
 	$(".Card").each(function (i, item) {
 		var rand = Math.floor(Math.random() * characters.length - 1);
 		if (rand == -1) rand = 0;
+
+		console.log(hola("jaime"));
 
 		var attackPoint = Math.floor(Math.random() * 500) + 500;
 		console.log("attack poitn generated :" + parseInt(attackPoint));
@@ -75,16 +79,73 @@ api.findSeries("avengers")
 		$name.text(character.name);
 		$image.attr("src", character.thumbnail.path + "." + character.thumbnail.extension);
 		$descrip.text(character.description);
+		$attack.attr("data-attack", attackPoint);
 		$attack.text("Puntos de ataque : " + attackPoint);
 	});
 })["catch"](function (err) {
-	debugger;
 	console.error(err);
+	debugger;
 });
-//Promises.all resulve todo lo que hay dentro de una array y cuando este listo devuelve.
-
 //pomises estados.
 //resolve
 //pending
 //rejected
 //all
+
+/*
+$(".Card").click((item) => {
+	//let text = $(item.target).text()
+	let $this = $(item)
+
+	let $cardName = $this.find('.Card-name')
+	console.log($cardName.text)
+})
+*/
+
+//funciana!
+/*
+$(".Card").click(function(e){
+	debugger
+	let $this = $(this)
+	let cardName = $this.find('.Card-name')
+	let cardPoints = $this.find('.Card-attack')
+
+	console.log("has echo click en "+ cardName.text())
+	console.log("puntos de ataque : " + cardPoints.data('attack'))
+})
+*/
+
+//intentando que sea en un sector determiando.
+$(".Layout-antagonist").on("click", function (e) {
+
+	if ($(e.target.parentNode).is(".Card")) {
+
+		var $this = $(e.target.parentNode);
+		var nombre = $this.find(".Card-name");
+		var points = $this.find(".Card-attack");
+
+		console.log("el nombre de la carta es :" + nombre.text() + " y posee :" + points.data("attack") + " puntos de ataque.");
+	}
+});
+
+/*
+$('body').on('click', function (event) {
+	debugger
+})
+*/
+function shuffle(arr) {
+	for (var i = 0; i < arr.length; i++) {
+		var temp = arr[i];
+		var index = Math.floor(Math.random() * arr.length - 1);
+		arr[i] = arr[index];
+		arr[index] = temp;
+	}
+	return arr;
+}
+
+function hola(mensaje) {
+	return "Hola amigo " + mensaje;
+}
+
+//Array.prototype.shuffle =  shuffle
+//Promises.all resulve todo lo que hay dentro de una array y cuando este listo devuelve.
